@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.example.studentscheduler.R;
 
+/** This is the main class that launches the app and provides a Home-screen. */
 public class MainActivity extends AppCompatActivity {
 
     @Override
