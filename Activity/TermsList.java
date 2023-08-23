@@ -11,11 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.studentscheduler.Database.Repository;
+import com.example.studentscheduler.Entity.Terms;
 import com.example.studentscheduler.R;
 import com.example.studentscheduler.R.id;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 public class TermsList extends AppCompatActivity {
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +44,17 @@ public class TermsList extends AppCompatActivity {
 
     }
 
-    /** Method to create a menu for navigation.  */
+    /**
+     * Method to create a menu for navigation.
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()== android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             this.finish();
+            return true;
+        }
+        if (item.getItemId() == R.id.AddTerms) {
 
         }
-        return true;
+        return false;
     }
 }
