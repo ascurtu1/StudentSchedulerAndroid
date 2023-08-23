@@ -10,7 +10,7 @@ import com.example.studentscheduler.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class CourseList extends AppCompatActivity {
+public class CoursesList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class CourseList extends AppCompatActivity {
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CourseList.this, AssessmentList.class);
+                Intent intent = new Intent(CoursesList.this, AssessmentsList.class);
                 startActivity(intent);
             }
         });

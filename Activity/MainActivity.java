@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button TermsBtn = findViewById(R.id.TermsBtn);
     TermsBtn.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, TermList.class);
+            Intent intent = new Intent(MainActivity.this, TermsList.class);
             startActivity(intent);
         }
     });
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Button CoursesBtn = findViewById(R.id.CoursesBtn);
         CoursesBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CourseList.class);
+                Intent intent = new Intent(MainActivity.this, CoursesList.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Button AssessmentsBtn = findViewById(R.id.AssessmentsBtn);
         AssessmentsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AssessmentList.class);
+                Intent intent = new Intent(MainActivity.this, AssessmentsList.class);
                 startActivity(intent);
             }
         });

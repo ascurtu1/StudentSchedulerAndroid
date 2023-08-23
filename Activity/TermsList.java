@@ -15,7 +15,7 @@ import com.example.studentscheduler.R;
 import com.example.studentscheduler.R.id;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class TermList extends AppCompatActivity {
+public class TermsList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class TermList extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TermList.this, CourseList.class);
+                Intent intent = new Intent(TermsList.this, CoursesList.class);
                 startActivity(intent);
             }
         });
