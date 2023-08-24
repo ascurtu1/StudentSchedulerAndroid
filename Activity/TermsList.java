@@ -3,6 +3,8 @@ package com.example.studentscheduler.Activity;
 import static com.example.studentscheduler.R.*;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +28,13 @@ public class TermsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_term_list);
+        RecyclerView recyclerView =findViewById(id.RV1);
+        Repository repository = new Repository(getApplication());
+        List<Terms> terms = repository.getAllTerms();
+        TermsAdapter adapter = new TermsAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.setTerms(terms);
 
         /** Creates a floating action button that allows for navigation to the next screen. */
         FloatingActionButton fab = findViewById(id.fab);
@@ -52,7 +61,7 @@ public class TermsList extends AppCompatActivity {
             this.finish();
             return true;
         }
-        if (item.getItemId() == R.id.AddTerms) {
+        if (item.getItemId() == id.AddTerms) {
 
         }
         return false;
