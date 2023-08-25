@@ -52,16 +52,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        Repository repository = new Repository(getApplication());
         Terms term = new Terms(1, "term1", "11/1/2023", "5/1/2024");
         Terms term2 = new Terms(2, "term2", "12/1/2023", "7/1/2024");
+
+
         Courses course = new Courses(1, 1, "course1", "12/1/2023", "7/1/2024", "Plan to Take", "John Smith", "8156349872", "myInstructor@yahoo.com", "This instructor is the best!");
         Courses course2 = new Courses(2, 2, "course2", "2/1/2024", "9/1/2024", "Dropped", "Sarah Socool", "8153324527", "coolcat@yahoo.com", "This class is difficult but rewarding!");
 
         Assessments assessment = new Assessments(1, 1, "Final Exam", "Performance Assessment", "11/1/2023", "5/1/2024");
         Assessments assessment2 = new Assessments(2, 2, "Midterm", "Objective Assessment", "12/1/2023", "6/1/2024");
 
-        Repository repository = new Repository(getApplication());
         repository.insert(term);
         repository.insert(term2);
         repository.insert(course);

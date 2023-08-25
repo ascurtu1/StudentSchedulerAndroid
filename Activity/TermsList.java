@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 
 import com.example.studentscheduler.Database.Repository;
@@ -24,6 +25,9 @@ import java.util.List;
 public class TermsList extends AppCompatActivity {
     private Repository repository;
 
+    /**
+     * Method to allow the display of the data into the recycler view.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,16 @@ public class TermsList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setTerms(terms);
 
+        /** Creates a button that brings the user to the Detailed Terms page. */
+        Button addTerms = findViewById(id.addTerms);
+
+        addTerms.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(TermsList.this, DetailedTerms.class);
+                startActivity(intent);
+            }
+        });
+
         /** Creates a floating action button that allows for navigation to the next screen. */
         FloatingActionButton fab = findViewById(id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -47,23 +61,28 @@ public class TermsList extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method to create a menu.
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_term_list, menu);
         return true;
 
     }
 
-    /**
-     * Method to create a menu for navigation.
-     */
+
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
             return true;
         }
         if (item.getItemId() == id.AddTerms) {
+            Intent detailedTerms = new Intent(TermsList.this, DetailedTerms.class);
+            startActivity(detailedTerms);
+            return true;
 
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 }
+
