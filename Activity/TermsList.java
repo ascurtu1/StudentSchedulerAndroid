@@ -32,7 +32,7 @@ public class TermsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_term_list);
-        RecyclerView recyclerView =findViewById(id.RV1);
+        RecyclerView recyclerView = findViewById(id.RV1);
         Repository repository = new Repository(getApplication());
         List<Terms> terms = repository.getAllTerms();
         TermsAdapter adapter = new TermsAdapter(this);
@@ -77,12 +77,26 @@ public class TermsList extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == id.AddTerms) {
-            Intent detailedTerms = new Intent(TermsList.this, DetailedTerms.class);
-            startActivity(detailedTerms);
-            return true;
+            Intent intent = new Intent(TermsList.this, DetailedTerms.class);
+            startActivity(intent);
 
+            return true;
         }
+
+        if (item.getItemId() == id.RefreshTerms) {
+            Repository repository = new Repository(getApplication());
+            List<Terms> updatedTerms = repository.getAllTerms();
+            RecyclerView recyclerView2 = findViewById(R.id.RV1);
+            TermsAdapter termAdapter = new TermsAdapter(this);
+            recyclerView2.setAdapter(termAdapter);
+            recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+            termAdapter.setTerms(updatedTerms);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 

@@ -76,12 +76,24 @@ public class CoursesList extends AppCompatActivity {
                 this.finish();
                 return true;
             }
-            if (item.getItemId() == R.id.addCourses) {
-                Intent detailedTerms = new Intent(CoursesList.this, DetailedTerms.class);
+            if (item.getItemId() == R.id.AddCourses) {
+                Intent detailedTerms = new Intent(CoursesList.this, DetailedCourses.class);
                 startActivity(detailedTerms);
                 return true;
 
             }
+
+            if (item.getItemId() == R.id.RefreshTerms) {
+                Repository repository = new Repository(getApplication());
+                List<Terms> updatedTerms = repository.getAllTerms();
+                RecyclerView recyclerView2 = findViewById(R.id.RV2);
+                TermsAdapter termAdapter = new TermsAdapter(this);
+                recyclerView2.setAdapter(termAdapter);
+                recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+                termAdapter.setTerms(updatedTerms);
+                return true;
+            }
+
             return super.onOptionsItemSelected(item);
         }
     }

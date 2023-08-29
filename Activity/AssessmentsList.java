@@ -69,6 +69,17 @@ public class AssessmentsList extends AppCompatActivity {
             return true;
 
         }
+
+        if (item.getItemId() == R.id.RefreshTerms) {
+            Repository repository = new Repository(getApplication());
+            List<Terms> updatedTerms = repository.getAllTerms();
+            RecyclerView recyclerView2 = findViewById(R.id.RV3);
+            TermsAdapter termAdapter = new TermsAdapter(this);
+            recyclerView2.setAdapter(termAdapter);
+            recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+            termAdapter.setTerms(updatedTerms);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,10 +30,15 @@ import java.util.Locale;
 
 public class DetailedTerms extends AppCompatActivity {
     Repository repository;
-    Button termSave;
+    Button saveBtn;
     EditText editTermTitle;
     EditText editTermStart;
     EditText editTermEnd;
+
+    String title;
+
+    String start;
+    String end;
 
     DatePickerDialog.OnDateSetListener termStart;
     DatePickerDialog.OnDateSetListener termEnd;
@@ -40,7 +46,6 @@ public class DetailedTerms extends AppCompatActivity {
     final Calendar calendarStartTerm = Calendar.getInstance();
     final Calendar calendarEndTerm = Calendar.getInstance();
     Terms selectedTerm;
-    int numberOfCourses;
 
 
     /**
@@ -61,31 +66,35 @@ public class DetailedTerms extends AppCompatActivity {
         SimpleDateFormat Startsdf = new SimpleDateFormat(myFormat, Locale.US);
         SimpleDateFormat Endsdf = new SimpleDateFormat(myFormat, Locale.US);
         editTermStart.setText(Startsdf.format(new Date()));
-        editTermStart.setText(Endsdf.format(new Date()));
+        editTermEnd.setText(Endsdf.format(new Date()));
 
 
-        editTermTitle.setText(getIntent().getStringExtra("Term Title"));
-        editTermStart.setText(getIntent().getStringExtra("Term Start"));
-        editTermStart.setText(getIntent().getStringExtra("Term End"));
-        termID = getIntent().getIntExtra("Term ID", -1);
+        title = getIntent().getStringExtra("Title");
+        start = getIntent().getStringExtra("Start");
+        end = getIntent().getStringExtra("End");
+        termID = getIntent().getIntExtra("ID", -1);
+
+        editTermTitle.setText(title);
+        editTermStart.setText(start);
+        editTermEnd.setText(end);
 
         repository = new Repository(getApplication());
 
-
+    /**
+     * The below methods allow for the creation of a calendar to allow the user to insert term start and end dates.
+     */
         editTermStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String dateProvided = editTermStart.getText().toString();
-                if (dateProvided.equals("")) {
-                    dateProvided = "08/10/23";
-                    try {
-                        calendarStartTerm.setTime(Startsdf.parse(dateProvided));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    new DatePickerDialog(DetailedTerms.this, termStart, calendarStartTerm.get(Calendar.YEAR),
-                            calendarStartTerm.get(Calendar.MONTH), calendarStartTerm.get(Calendar.DAY_OF_MONTH)).show();
+                if (dateProvided.equals("")) dateProvided = "08/10/23";
+                try {
+                    calendarStartTerm.setTime(Startsdf.parse(dateProvided));
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+                new DatePickerDialog(DetailedTerms.this, termStart, calendarStartTerm.get(Calendar.YEAR),
+                        calendarStartTerm.get(Calendar.MONTH), calendarStartTerm.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -136,7 +145,11 @@ public class DetailedTerms extends AppCompatActivity {
         };
 
 
-        termSave.setOnClickListener(new View.OnClickListener() {
+        /**
+         * Method allows the user to click the save button and either save a new term or update a current term.
+         */
+        saveBtn = findViewById(R.id.saveTermBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String titleProvided = editTermTitle.getText().toString();
                 String dateProvided = editTermStart.getText().toString();
@@ -147,11 +160,12 @@ public class DetailedTerms extends AppCompatActivity {
                     Terms term = new Terms(termID, titleProvided, dateProvided, dateEnteredEnd);
                     repository.update(term);
                 } else {
-                    Terms term = new Terms(termID, titleProvided, dateProvided, dateEnteredEnd);
+                    Terms term = new Terms(0, titleProvided, dateProvided, dateEnteredEnd);
                     repository.insert(term);
                 }
 
-                finish();
+                Intent intent = new Intent(DetailedTerms.this, TermsList.class);
+                startActivity(intent);
             }
         });
 
@@ -161,7 +175,7 @@ public class DetailedTerms extends AppCompatActivity {
          */
         RecyclerView recyclerview = findViewById(R.id.associatedCourses);
         repository = new Repository(getApplication());
-        CoursesAdapter coursesAdapter = new CoursesAdapter(this);
+        final CoursesAdapter coursesAdapter = new CoursesAdapter(this);
         recyclerview.setAdapter(coursesAdapter);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         List<Courses> filteredCourses = new ArrayList<>();
@@ -169,8 +183,8 @@ public class DetailedTerms extends AppCompatActivity {
             if (c.getTermID() == termID) {
                 filteredCourses.add(c);
             }
-            coursesAdapter.setCourses(filteredCourses);
         }
+        coursesAdapter.setCourses(filteredCourses);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -178,28 +192,35 @@ public class DetailedTerms extends AppCompatActivity {
         return true;
     }
 
-
+    /**
+     * Options menu which allows user to delete a term and issues appropriate warnings.
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
-            return true;
-        }
-        if (item.getItemId() == R.id.deleteTerm) {
-            for (Terms t : repository.getAllTerms()) {
-                if (t.getTermID() == termID) {
-                    selectedTerm = t;
-                    repository.delete(selectedTerm);
-                    Toast.makeText(DetailedTerms.this, "The term has been deleted.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(DetailedTerms.this, "The term cannot be deleted as it has a course attached to it.", Toast.LENGTH_SHORT).show();
-
+        } else {
+            int count = 0;
+            for (Courses course : repository.getAllCourses()) {
+                if (course.getTermID() == termID) {
+                    ++count;
                 }
             }
-            finish();
+            if (count == 0) {
+                Terms term = new Terms(termID, title, start, end);
+                Toast.makeText(this, "The term has been deleted.", Toast.LENGTH_SHORT).show();
+                repository.delete(term);
+                Intent intent = new Intent(DetailedTerms.this, TermsList.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Unable to delete term due to associated course.", Toast.LENGTH_SHORT).show();
+            }
+            return true;
 
-        } return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
+
 
 
 
