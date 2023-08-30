@@ -12,5 +12,6 @@ public class DetailedCourses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_courses);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
