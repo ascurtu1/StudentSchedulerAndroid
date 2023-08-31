@@ -16,6 +16,7 @@ import com.example.studentscheduler.R;
 
 /** This is the main class that launches the app and provides a Home-screen. */
 public class MainActivity extends AppCompatActivity {
+    public static int numAlert;
 
     /**
      * The methods below allow the user to click a button and brings them to that screen.

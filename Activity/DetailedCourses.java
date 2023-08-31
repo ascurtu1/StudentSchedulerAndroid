@@ -2,12 +2,18 @@ package com.example.studentscheduler.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DetailedCourses extends AppCompatActivity {
@@ -51,7 +58,11 @@ public class DetailedCourses extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener courseStartDateCalendar;
     DatePickerDialog.OnDateSetListener courseEndDateCalendar;
 
-    /** Populating the page with the information from the database. */
+    Button saveBtnCourse;
+
+    /**
+     * Populating the page with the information from the database.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +110,38 @@ public class DetailedCourses extends AppCompatActivity {
 
 
         /** Populating the spinner for course status. */
+
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(this, R.array.courseStatus, android.R.layout.simple_spinner_dropdown_item);
+        courseStatusSpin.setAdapter(statusAdapter);
+        String currentStatus = courseStatus;
+        int intStatus = statusAdapter.getPosition(currentStatus);
+        courseStatusSpin.setSelection(intStatus);
+
+
+        /** Populating the spinner for course associated term. */
+
+        List<Terms> termListSpinner = repository.getAllTerms();
+
+        ArrayAdapter<Terms> termAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, termListSpinner);
+        termAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        termSpin.setAdapter(termAdapter);
+        termSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int selectedTerm = termListSpinner.get(i).getTermID();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        for (int i = 0; i < termListSpinner.size(); i++) {
+            if (termListSpinner.get(i).getTermID() == termID) {
+                termSpin.setSelection(i);
+                break;
+            }
+        }
+
 
 
 /**
@@ -163,6 +206,34 @@ public class DetailedCourses extends AppCompatActivity {
             }
         };
 
+        /**
+         * Method allows the user to click the save button and either save a new course or update a current course.
+         */
+        saveBtnCourse = findViewById(R.id.saveCourseBtn);
+        saveBtnCourse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String courseTitleProvided = courseTitleEdit.getText().toString();
+                String courseDateProvided = courseStartEdit.getText().toString();
+                String courseDateEnteredEnd = courseEndEdit.getText().toString();
+                String courseInstructor = instructorEdit.getText().toString();
+                String courseInstructorEmail = instructorEmailEdit.getText().toString();
+                String courseInstructorPhone = instructorPhoneEdit.getText().toString();
+                String courseNote = courseNoteEdit.getText().toString();
+                String courseStatus = courseStatusSpin.getSelectedItem().toString();
+
+                Repository repository = new Repository(getApplication());
+                if (courseID != -1) {
+                    Courses course = new Courses (courseID, termID, courseTitleProvided, courseDateProvided,courseDateEnteredEnd,courseStatus,courseInstructor,courseInstructorEmail, courseInstructorPhone, courseNote);
+                    repository.update(course);
+                } else {
+                    Courses course = new Courses (courseID, termID, courseTitleProvided, courseDateProvided,courseDateEnteredEnd,courseStatus,courseInstructor,courseInstructorEmail, courseInstructorPhone, courseNote);
+                    repository.insert(course);
+                }
+
+                Intent intent = new Intent(DetailedCourses.this, CoursesList.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -184,27 +255,66 @@ public class DetailedCourses extends AppCompatActivity {
                 if (c.getCourseID() == courseID) {
                     Courses pickedCourse = c;
                     repository.delete(pickedCourse);
+                }
+            }
 
-                } if (item.getItemId() == R.id.Share) {
+                } else if (item.getItemId() == R.id.Share) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, courseNoteEdit.getText().toString());
+                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Note");
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    startActivity(shareIntent);
+                    return true;
+                } else if (item.getItemId() == R.id.notifyStart) {
+                    String startNotify = courseStartEdit.getText().toString();
+                    String myFormat = "MM/dd/yyyy";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat, Locale.US);
+
                     try {
-                        EditText courseNoteEdit = findViewById(R.id.courseNoteEdit);
-                        String shareNote = courseNoteEdit.getText().toString();
+                        Date startDate2 = sdf2.parse(startNotify);
+                        String courseName = courseTitleEdit.getText().toString();
 
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType("text/plain");
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareNote);
-                        shareIntent.putExtra(Intent.EXTRA_TITLE, "Course Notes: ");
-                        startActivity(Intent.createChooser(shareIntent, null));
+
+                        long startTrigger = startDate2.getTime();
+                        Intent startIntent = new Intent(DetailedCourses.this, Receiver.class);
+                        startIntent.putExtra("key", "Course: " + courseName + " starts today!");
+                        PendingIntent startPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager alarmManagerStart = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManagerStart.set(AlarmManager.RTC_WAKEUP, startTrigger, startPendingIntent);
+
                         return true;
-                    } catch (Exception e) {
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    String startNotify = courseEndEdit.getText().toString();
+                    String myFormat = "MM/dd/yyyy";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat, Locale.US);
+
+                    try {
+                        Date endDate2 = sdf2.parse(startNotify);
+                        String courseName = courseTitleEdit.getText().toString();
+
+
+                        long endDateTrigger = endDate2.getTime();
+                        Intent endDateIntent = new Intent(DetailedCourses.this, Receiver.class);
+                        endDateIntent.putExtra("key", "Course: " + courseName + " ends today!");
+                        PendingIntent endPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, endDateIntent, PendingIntent.FLAG_IMMUTABLE);
+                        AlarmManager alarmManagerEndDate = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManagerEndDate.set(AlarmManager.RTC_WAKEUP, endDateTrigger, endPendingIntent);
+
+                        return true;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                 }
+                return super.onOptionsItemSelected(item);
 
             }
 
         }
-        return super.onOptionsItemSelected(item);
 
-    }
-}
+
