@@ -87,7 +87,7 @@ public class DetailedTerms extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String dateProvided = editTermStart.getText().toString();
-                if (dateProvided.equals("")) dateProvided = "08/10/23";
+                if (dateProvided.equals("")) dateProvided = "09/01/23";
                 try {
                     calendarStartTerm.setTime(Startsdf.parse(dateProvided));
                 } catch (ParseException e) {
@@ -102,7 +102,7 @@ public class DetailedTerms extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String dateEnteredEnd = editTermEnd.getText().toString();
-                if (dateEnteredEnd.equals("")) dateEnteredEnd = "08/10/23";
+                if (dateEnteredEnd.equals("")) dateEnteredEnd = "09/01/23";
                 try {
                     calendarEndTerm.setTime(Endsdf.parse(dateEnteredEnd));
                 } catch (ParseException e) {
