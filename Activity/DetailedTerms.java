@@ -45,7 +45,7 @@ public class DetailedTerms extends AppCompatActivity {
     int termID;
     final Calendar calendarStartTerm = Calendar.getInstance();
     final Calendar calendarEndTerm = Calendar.getInstance();
-    Terms selectedTerm;
+
 
 
     /**

@@ -50,4 +50,9 @@ public class Terms {
         this.termEnd = termEnd;
     }
 
+    public String toString() {
+        return termTitle;
+    }
 }
+
+

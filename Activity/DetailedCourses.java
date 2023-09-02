@@ -26,6 +26,7 @@ import com.example.studentscheduler.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -70,11 +71,6 @@ public class DetailedCourses extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Repository repository = new Repository(getApplication());
 
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat startDate = new SimpleDateFormat(myFormat, Locale.US);
-        SimpleDateFormat endDate = new SimpleDateFormat(myFormat, Locale.US);
-        courseStartEdit.setText(startDate.format(new Date()));
-        courseEndEdit.setText(endDate.format(new Date()));
 
         courseTitleEdit = findViewById(R.id.courseTitleEdit);
         courseStartEdit = findViewById(R.id.courseStartEdit);
@@ -85,6 +81,12 @@ public class DetailedCourses extends AppCompatActivity {
         courseNoteEdit = findViewById(R.id.courseNoteEdit);
         courseStatusSpin = findViewById(R.id.courseStatusSpin); //spinner
         termSpin = findViewById(R.id.termSpin); //spinner
+
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat startDate = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat endDate = new SimpleDateFormat(myFormat, Locale.US);
+        courseStartEdit.setText(startDate.format(new Date()));
+        courseEndEdit.setText(endDate.format(new Date()));
 
         courseTitle = getIntent().getStringExtra("Title");
         courseStart = getIntent().getStringExtra("Start");
@@ -127,9 +129,11 @@ public class DetailedCourses extends AppCompatActivity {
         termSpin.setAdapter(termAdapter);
         termSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int selectedTerm = termListSpinner.get(i).getTermID();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
+                Terms selectedTerm = termListSpinner.get(i);
+                termID = selectedTerm.getTermID();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -141,7 +145,6 @@ public class DetailedCourses extends AppCompatActivity {
                 break;
             }
         }
-
 
 
 /**
@@ -223,10 +226,10 @@ public class DetailedCourses extends AppCompatActivity {
 
                 Repository repository = new Repository(getApplication());
                 if (courseID != -1) {
-                    Courses course = new Courses (courseID, termID, courseTitleProvided, courseDateProvided,courseDateEnteredEnd,courseStatus,courseInstructor,courseInstructorEmail, courseInstructorPhone, courseNote);
+                    Courses course = new Courses(courseID, termID, courseTitleProvided, courseDateProvided, courseDateEnteredEnd, courseStatus, courseInstructor, courseInstructorEmail, courseInstructorPhone, courseNote);
                     repository.update(course);
                 } else {
-                    Courses course = new Courses (courseID, termID, courseTitleProvided, courseDateProvided,courseDateEnteredEnd,courseStatus,courseInstructor,courseInstructorEmail, courseInstructorPhone, courseNote);
+                    Courses course = new Courses(courseID, termID, courseTitleProvided, courseDateProvided, courseDateEnteredEnd, courseStatus, courseInstructor, courseInstructorEmail, courseInstructorPhone, courseNote);
                     repository.insert(course);
                 }
 
@@ -249,72 +252,75 @@ public class DetailedCourses extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
-        }
-        if (item.getItemId() == R.id.deleteCourse) {
-            for (Courses c : repository.getAllCourses()) {
-                if (c.getCourseID() == courseID) {
-                    Courses pickedCourse = c;
-                    repository.delete(pickedCourse);
-                }
+        } if (item.getItemId() == R.id.deleteCourse) {
+                Repository repository = new Repository(getApplication());
+                Courses pickedCourse = new Courses(termID, courseID,"","","","","","","","");
+                repository.delete(pickedCourse);
+                Toast.makeText(this,"The course has been deleted.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DetailedCourses.this, CoursesList.class);
+                startActivity(intent);
+                return true;
             }
 
-                } else if (item.getItemId() == R.id.Share) {
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, courseNoteEdit.getText().toString());
-                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Note");
-                    sendIntent.setType("text/plain");
-                    Intent shareIntent = Intent.createChooser(sendIntent, null);
-                    startActivity(shareIntent);
+
+     if (item.getItemId() == R.id.Share) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, courseNoteEdit.getText().toString());
+                sendIntent.putExtra(Intent.EXTRA_TITLE, "Note");
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+                return true;
+            } if (item.getItemId() == R.id.notifyStart) {
+                String startNotify = courseStartEdit.getText().toString();
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat, Locale.US);
+
+                try {
+                    Date startDate2 = sdf2.parse(startNotify);
+                    String courseName = courseTitleEdit.getText().toString();
+
+
+                    long startTrigger = startDate2.getTime();
+                    Intent startIntent = new Intent(DetailedCourses.this, Receiver.class);
+                    startIntent.putExtra("key", "Course: " + courseName + " starts today!");
+                    PendingIntent startPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManagerStart = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManagerStart.set(AlarmManager.RTC_WAKEUP, startTrigger, startPendingIntent);
+
                     return true;
-                } else if (item.getItemId() == R.id.notifyStart) {
-                    String startNotify = courseStartEdit.getText().toString();
-                    String myFormat = "MM/dd/yyyy";
-                    SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat, Locale.US);
-
-                    try {
-                        Date startDate2 = sdf2.parse(startNotify);
-                        String courseName = courseTitleEdit.getText().toString();
-
-
-                        long startTrigger = startDate2.getTime();
-                        Intent startIntent = new Intent(DetailedCourses.this, Receiver.class);
-                        startIntent.putExtra("key", "Course: " + courseName + " starts today!");
-                        PendingIntent startPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager alarmManagerStart = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        alarmManagerStart.set(AlarmManager.RTC_WAKEUP, startTrigger, startPendingIntent);
-
-                        return true;
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    String startNotify = courseEndEdit.getText().toString();
-                    String myFormat = "MM/dd/yyyy";
-                    SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat, Locale.US);
-
-                    try {
-                        Date endDate2 = sdf2.parse(startNotify);
-                        String courseName = courseTitleEdit.getText().toString();
-
-
-                        long endDateTrigger = endDate2.getTime();
-                        Intent endDateIntent = new Intent(DetailedCourses.this, Receiver.class);
-                        endDateIntent.putExtra("key", "Course: " + courseName + " ends today!");
-                        PendingIntent endPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, endDateIntent, PendingIntent.FLAG_IMMUTABLE);
-                        AlarmManager alarmManagerEndDate = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        alarmManagerEndDate.set(AlarmManager.RTC_WAKEUP, endDateTrigger, endPendingIntent);
-
-                        return true;
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                return super.onOptionsItemSelected(item);
+            } else {
+                String endNotify = courseEndEdit.getText().toString();
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf3 = new SimpleDateFormat(myFormat, Locale.US);
+
+                try {
+                    Date endDate2 = sdf3.parse(endNotify);
+                    String courseName = courseTitleEdit.getText().toString();
+
+
+                    long endDateTrigger = endDate2.getTime();
+                    Intent endDateIntent = new Intent(DetailedCourses.this, Receiver.class);
+                    endDateIntent.putExtra("key", "Course: " + courseName + " ends today!");
+                    PendingIntent endPendingIntent = PendingIntent.getBroadcast(DetailedCourses.this, MainActivity.numAlert++, endDateIntent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManagerEndDate = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManagerEndDate.set(AlarmManager.RTC_WAKEUP, endDateTrigger, endPendingIntent);
+
+                    return true;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
             }
+            return super.onOptionsItemSelected(item);
 
         }
+    }
+
+
 
 
