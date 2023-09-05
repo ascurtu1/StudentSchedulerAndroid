@@ -198,7 +198,14 @@ public class DetailedTerms extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
-        } else {
+        } else if (item.getItemId() == R.id.homePage) {
+                Intent intent = new Intent(DetailedTerms.this, MainActivity.class);
+                startActivity(intent);
+
+                return true;
+            }
+
+        else {
             int count = 0;
             for (Courses course : repository.getAllCourses()) {
                 if (course.getTermID() == termID) {

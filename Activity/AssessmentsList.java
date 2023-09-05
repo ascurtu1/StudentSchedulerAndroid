@@ -63,6 +63,14 @@ public class AssessmentsList extends AppCompatActivity {
             this.finish();
             return true;
         }
+
+        if (item.getItemId() == R.id.homePage) {
+            Intent intent = new Intent(AssessmentsList.this, MainActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
+
         if (item.getItemId() == R.id.addAssessments) {
             Intent detailedTerms = new Intent(AssessmentsList.this, DetailedAssessments.class);
             startActivity(detailedTerms);

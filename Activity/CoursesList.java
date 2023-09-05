@@ -74,6 +74,11 @@ public class CoursesList extends AppCompatActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             if (item.getItemId() == android.R.id.home) {
                 this.finish();
+            }
+            if (item.getItemId() == R.id.homePage) {
+                Intent intent = new Intent(CoursesList.this, MainActivity.class);
+                startActivity(intent);
+
                 return true;
             }
             if (item.getItemId() == R.id.AddCourses) {
@@ -82,7 +87,6 @@ public class CoursesList extends AppCompatActivity {
                 return true;
 
             }
-
             if (item.getItemId() == R.id.RefreshTerms) {
                 Repository repository = new Repository(getApplication());
                 List<Terms> updatedTerms = repository.getAllTerms();

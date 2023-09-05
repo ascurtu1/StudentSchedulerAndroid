@@ -111,4 +111,9 @@ public class Courses {
         this.courseNote = courseNote;
     }
 
+    public String toString() {
+        return courseTitle;
+    }
 }
+
+

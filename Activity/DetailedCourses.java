@@ -62,7 +62,7 @@ public class DetailedCourses extends AppCompatActivity {
     Button saveBtnCourse;
 
     /**
-     * Populating the page with the information from the database.
+     * Populating the Detailed Courses page with the information from the database.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +148,7 @@ public class DetailedCourses extends AppCompatActivity {
 
 
 /**
- * The below methods allow for the creation of a calendar to allow the user to insert term start and end dates.
+ * The below methods allow for the creation of a calendar to allow the user to insert course start and end dates.
  */
         courseStartEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -252,9 +252,17 @@ public class DetailedCourses extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
-        } if (item.getItemId() == R.id.deleteCourse) {
+        }
+        if (item.getItemId() == R.id.homePage) {
+                Intent intent = new Intent(DetailedCourses.this, MainActivity.class);
+                startActivity(intent);
+
+                return true;
+            }
+
+        if (item.getItemId() == R.id.deleteCourse) {
                 Repository repository = new Repository(getApplication());
-                Courses pickedCourse = new Courses(termID, courseID,"","","","","","","","");
+                Courses pickedCourse = new Courses(courseID, termID,"","","","","","","","");
                 repository.delete(pickedCourse);
                 Toast.makeText(this,"The course has been deleted.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(DetailedCourses.this, CoursesList.class);

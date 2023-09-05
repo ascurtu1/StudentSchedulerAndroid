@@ -76,6 +76,12 @@ public class TermsList extends AppCompatActivity {
             this.finish();
             return true;
         }
+        if (item.getItemId() == id.homePage) {
+            Intent intent = new Intent(TermsList.this, MainActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
         if (item.getItemId() == id.AddTerms) {
             Intent intent = new Intent(TermsList.this, DetailedTerms.class);
             startActivity(intent);
