@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/AddCourses"
+        android:title="Detailed Courses Information" />
+
+    <item
+        android:id="@+id/RefreshCourses"
+        android:title="Refresh Courses" />
+
+    <item
+        android:id="@+id/homePage"
+        android:title="Home" />
+
+</menu>

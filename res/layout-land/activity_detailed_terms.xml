@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.DetailedTerms">
+
+
+    <LinearLayout
+        android:layout_width="270dp"
+        android:layout_height="277dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.529">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/termTitle"
+                android:layout_width="86dp"
+                android:layout_height="wrap_content"
+                android:text="Term Title"
+                tools:ignore="DuplicateIds" />
+
+            <EditText
+                android:id="@+id/termTitleEdit"
+                android:layout_width="184dp"
+                android:layout_height="48dp"
+                android:hint="Term Title" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/termStart"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:text="Term Start" />
+
+            <EditText
+                android:id="@+id/termStartEdit"
+                android:layout_width="187dp"
+                android:layout_height="48dp"
+                android:hint="MM/DD/YY"
+                android:inputType="date" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/termEnd"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:text="Term End" />
+
+            <EditText
+                android:id="@+id/termEndEdit"
+                android:layout_width="189dp"
+                android:layout_height="48dp"
+                android:hint="MM/DD/YY"
+                android:inputType="date" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/saveTermBtn"
+        android:layout_width="84dp"
+        android:layout_height="40dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.937" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/associatedCourses"
+        android:layout_width="251dp"
+        android:layout_height="251dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.722"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.606" />
+
+    <TextView
+        android:id="@+id/assocCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Associated Courses"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.077" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

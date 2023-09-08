@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.DetailedAssessments">
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="372dp"
+        android:layout_height="246dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.074">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/assessmentTitle"
+                    android:layout_width="131dp"
+                    android:layout_height="wrap_content"
+                    android:text="Assessment Title"
+                    tools:ignore="DuplicateIds" />
+
+                <EditText
+                    android:id="@+id/assessmentTitleEdit"
+                    android:layout_width="242dp"
+                    android:layout_height="48dp"
+                    android:hint="title" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/assessmentStart"
+                    android:layout_width="131dp"
+                    android:layout_height="wrap_content"
+                    android:text="Assessment Start" />
+
+                <EditText
+                    android:id="@+id/assessmentStartEdit"
+                    android:layout_width="239dp"
+                    android:layout_height="48dp"
+                    android:hint="MM/DD/YY"
+                    android:inputType="date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/assessmentEnd"
+                    android:layout_width="129dp"
+                    android:layout_height="wrap_content"
+                    android:text="Assessment End" />
+
+                <EditText
+                    android:id="@+id/assessmentEndEdit"
+                    android:layout_width="238dp"
+                    android:layout_height="48dp"
+                    android:hint="MM/DD/YY"
+                    android:inputType="date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/assessmentType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Assessment Type" />
+
+                <Spinner
+                    android:id="@+id/assessmentTypeSpin"
+                    android:layout_width="245dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/assessmentCourse"
+                    android:layout_width="111dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course" />
+
+                <Spinner
+                    android:id="@+id/courseSpin"
+                    android:layout_width="246dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/saveAssessmentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.524" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

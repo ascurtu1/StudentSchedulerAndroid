@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.DetailedCourses">
+
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="364dp"
+        android:layout_height="443dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseTitle"
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course Title" />
+
+                <EditText
+                    android:id="@+id/courseTitleEdit"
+                    android:layout_width="253dp"
+                    android:layout_height="48dp"
+                    android:hint="Course Title" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseStart"
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course Start" />
+
+                <EditText
+                    android:id="@+id/courseStartEdit"
+                    android:layout_width="249dp"
+                    android:layout_height="48dp"
+                    android:hint="MM/DD/YY"
+                    android:inputType="date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseEnd"
+                    android:layout_width="117dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course End" />
+
+                <EditText
+                    android:id="@+id/courseEndEdit"
+                    android:layout_width="247dp"
+                    android:layout_height="48dp"
+                    android:hint="MM/DD/YY"
+                    android:inputType="date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseStatus"
+                    android:layout_width="102dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course Status" />
+
+                <Spinner
+                    android:id="@+id/courseStatusSpin"
+                    android:layout_width="167dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseAssocTerm"
+                    android:layout_width="101dp"
+                    android:layout_height="wrap_content"
+                    android:text="Term" />
+
+                <Spinner
+                    android:id="@+id/termSpin"
+                    android:layout_width="170dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/instructor"
+                    android:layout_width="117dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor" />
+
+                <EditText
+                    android:id="@+id/instructorEdit"
+                    android:layout_width="247dp"
+                    android:layout_height="48dp"
+                    android:hint="instructor name" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/instructorEmail"
+                    android:layout_width="117dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor Email" />
+
+                <EditText
+                    android:id="@+id/instructorEmailEdit"
+                    android:layout_width="244dp"
+                    android:layout_height="48dp"
+                    android:hint="email" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/instructorPhone"
+                    android:layout_width="118dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor Phone" />
+
+                <EditText
+                    android:id="@+id/instructorPhoneEdit"
+                    android:layout_width="246dp"
+                    android:layout_height="48dp"
+                    android:hint="phone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/courseNote"
+                    android:layout_width="117dp"
+                    android:layout_height="wrap_content"
+                    android:text="Course Note" />
+
+                <EditText
+                    android:id="@+id/courseNoteEdit"
+                    android:layout_width="245dp"
+                    android:layout_height="48dp"
+                    android:hint="note" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/saveCourseBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.922"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.831" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

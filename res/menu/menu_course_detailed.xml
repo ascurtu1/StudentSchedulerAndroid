@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/deleteCourse"
+        android:title="Delete" />
+
+    <item android:title="Share Note"
+        android:id="@+id/Share" />
+
+    <item android:title="Notify Start"
+        android:id="@+id/notifyStart" />
+
+    <item android:title="Notify End"
+        android:id="@+id/notifyEnd" />
+
+    <item
+        android:id="@+id/homePage"
+        android:title="Home" />
+
+
+</menu>
