@@ -229,7 +229,7 @@ public class DetailedCourses extends AppCompatActivity {
                     Courses course = new Courses(courseID, termID, courseTitleProvided, courseDateProvided, courseDateEnteredEnd, courseStatus, courseInstructor, courseInstructorEmail, courseInstructorPhone, courseNote);
                     repository.update(course);
                 } else {
-                    Courses course = new Courses(courseID, termID, courseTitleProvided, courseDateProvided, courseDateEnteredEnd, courseStatus, courseInstructor, courseInstructorEmail, courseInstructorPhone, courseNote);
+                    Courses course = new Courses(0, termID, courseTitleProvided, courseDateProvided, courseDateEnteredEnd, courseStatus, courseInstructor, courseInstructorEmail, courseInstructorPhone, courseNote);
                     repository.insert(course);
                 }
 

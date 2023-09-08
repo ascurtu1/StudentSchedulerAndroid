@@ -14,7 +14,7 @@ import com.example.studentscheduler.Entity.Assessments;
 import com.example.studentscheduler.Entity.Courses;
 import com.example.studentscheduler.Entity.Terms;
 
-@Database(entities = {Terms.class, Courses.class, Assessments.class}, version=9, exportSchema = false)
+@Database(entities = {Terms.class, Courses.class, Assessments.class}, version=12, exportSchema = false)
 public abstract class DatabaseBuilder extends RoomDatabase {
     public abstract TermsDao termsDao();
 

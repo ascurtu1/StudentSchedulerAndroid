@@ -84,7 +84,7 @@ public class DetailedAssessments extends AppCompatActivity {
         assessmentEnd = getIntent().getStringExtra("End");
         assessmentType = getIntent().getStringExtra("Type");
         assessmentID= getIntent().getIntExtra("ID", -1);
-        courseID = getIntent().getIntExtra("Course ID", -1);
+        courseID = getIntent().getIntExtra("CourseID", -1);
 
         assessmentTitleEdit.setText(assessmentTitle);
         assessmentStartEdit.setText(assessmentStart);
@@ -207,7 +207,7 @@ public class DetailedAssessments extends AppCompatActivity {
                     Assessments assessment = new Assessments(assessmentID, courseID, aTitleProvided, aTypeProvided, aStartDateProvided, aEndDateProvided);
                     repository.update(assessment);
                 } else {
-                    Assessments assessment = new Assessments(assessmentID, courseID, aTitleProvided, aTypeProvided, aStartDateProvided, aEndDateProvided);
+                    Assessments assessment = new Assessments(0, courseID, aTitleProvided, aTypeProvided, aStartDateProvided, aEndDateProvided);
                     repository.insert(assessment);
                 }
 
